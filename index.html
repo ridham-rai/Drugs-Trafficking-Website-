@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index_css.css">
+    <title>Drug Trafficking Monitor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Drug Trafficking Monitor</h1>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="report.html" class="active">User Feedback & Query</a>
+            <a href="about.html">About Us</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="welcome">
+            <h2>Welcome to the Drug Trafficking Monitor</h2>
+            <p>Protect your platform with advanced detection of drug trafficking activities powered by machine learning and real-time monitoring.</p>
+        </section>
+
+        <section class="monitor">
+            <div class="grid">
+                <div class="item">
+                    <h3>Platform Activity</h3>
+                    <canvas id="Activity_Chart"></canvas>
+                </div>
+                <div class="item">
+                    <h3>Threat Statistics</h3>
+                    <canvas id="threat_Chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Advanced Features</h2>
+            <div class="f_grid">
+                <div class="f_effect">
+                    <h3>AI-Powered Drug Detection</h3>
+                    <p>Leverages cutting-edge machine learning models for accurate identification of substances from both images and text.</p>
+                </div>
+                <div class="f_effect">
+                    <h3>User Feedback & Query Handling</h3>
+                    <p>Enables users to submit feedback and queries about substances or results through an intuitive form.</p>
+                </div>
+                <div class="f_effect">
+                    <h3>Trend Analysis & Visualization</h3>
+                    <p>Shows real-time graphs to visualize trends in substance detection, user interactions, and flagged reports over time.</p>
+                </div>
+            </div>
+            
+        </section>
+
+        <h2>Key Benefits</h2>
+<div class="b_grid">
+    <div class="b_effect">Enhanced Drug Detection</div>
+    <div class="b_effect">User Feedback & Query Handling</div>
+    <div class="b_effect">Automated Substance Identification</div>
+    <div class="b_effect">Comprehensive Data Trends & Insights</div>
+</div>
+
+
+        <button id="btn"><a href="dashboard.html">Get Started</a></button>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Drug Trafficking Monitor. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const ctxActivity = document.getElementById('Activity_Chart').getContext('2d');
+new Chart(ctxActivity, {
+    type: 'line',
+    data: {
+        labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
+        datasets: [{
+            label: 'Drugs Cases Detected ',
+            data: [500, 700, 1200, 1500, 1800, 2200],
+            borderColor: '#3f51b5',
+            borderWidth: 2,
+            fill: false
+        }]
+    }
+});
+
+const ctxThreat = document.getElementById('threat_Chart').getContext('2d');
+new Chart(ctxThreat, {
+    type: 'bar',
+    data: {
+        labels: ['Cocaine', 'Heroin', 'Morphine', 'Cannabis', 'Fentanyl'],
+        datasets: [{
+            label: 'Illegal Consumption Cases',
+            data: [60000, 47560, 7500, 34000, 16000, 56000],
+            backgroundColor: ['#ff6f61', // Cocaine
+                    '#ff9800', // Heroin
+                    '#4caf50', // Methamphetamine
+                    '#3f51b5', // Cannabis
+                    '#9c27b0'  // Fentanyl
+                    ],
+        }]
+    }
+});
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="report_css.css">
+    <title>User Feedback & Query - Drug Trafficking Monitor</title>
+</head>
+<body>
+    <header>
+        <h1>Drug Trafficking Monitor</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="report.html" class="active">User Feedback & Query</a>
+            <a href="about.html">About Us</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>User Feedback & Query</h2>
+        <section class="row">
+            <div class="slider">
+                <div class="slides">
+                    <img src="slider1.jpg" alt="Image 1">
+                    <img src="slider2.jpg" alt="Image 2">
+                </div>
+                <button class="slider_btn prev">Prev</button>
+                <button class="slider_btn next">Next</button>
+            </div>
+            <div class="center">
+                <h3>Please provide your query or feedback:</h3>
+                <form id="queryForm">
+                    <label for="feedbackType">Type of Feedback/Query:</label>
+                    <select id="feedbackType" name="feedbackType" required>
+                        <option value="">Select Type</option>
+                        <option value="General Query">General Query</option>
+                        <option value="Feedback on Drug Detection">Feedback on Drug Detection</option>
+                        <option value="Technical Issue">Technical Issue</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" required>
+
+                    <label for="details">Description of your query or feedback:</label>
+                    <textarea id="details" name="details" rows="4" required></textarea>
+                </form>
+            </div>
+            <div class="right">
+                <form id="additionalForm">
+                    <label for="location">Location (City/Region):</label>
+                    <input type="text" id="location" name="location">
+
+                    <label for="contactInfo">Contact Information (Optional):</label>
+                    <input type="text" id="contactInfo" name="contactInfo">
+
+                    <div>
+                        <button type="submit" id="submitFeedback">Submit Feedback/Query</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Drug Trafficking Monitor</p>
+    </footer>
+
+    <script src="report_js.js"></script>
+</body>
+</html>

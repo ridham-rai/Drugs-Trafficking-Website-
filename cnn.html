@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload - Drug Detection</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .upload-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+        .upload-container h2 {
+            font-size: 1.5rem;
+            color: #374151;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .drag-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            background-color: #f9fafb;
+            transition: background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .drag-area:hover {
+            background-color: #e5e7eb;
+        }
+        .drag-area p {
+            margin: 8px 0;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+        .drag-area svg {
+            width: 48px;
+            height: 48px;
+            fill: #9ca3af;
+            margin-bottom: 10px;
+        }
+        .file-details {
+            margin-top: 16px;
+            text-align: left;
+        }
+        .file-details p {
+            margin: 4px 0;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+        .progress-bar {
+            margin-top: 16px;
+            height: 8px;
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar div {
+            height: 100%;
+            width: 0%;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+        .done-button {
+            margin-top: 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .done-button:hover {
+            background-color: #1e40af;
+        }
+        .response-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            margin-top: 16px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            display: none;
+        }
+        .error {
+            color: #dc2626;
+        }
+        .success {
+            color: #374151;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>File Upload</h2>
+        <div class="drag-area" id="dragArea">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h3l-4 4-4-4h3V7z"/></svg>
+            <p>Drag and drop or <a id="browseFiles">browse your files</a></p>
+        </div>
+        <div class="file-details" id="fileDetails" style="display: none;">
+            <p id="fileName"></p>
+            <div class="progress-bar" id="progressBar">
+                <div></div>
+            </div>
+        </div>
+        <button class="done-button" id="doneButton" style="display: none;">Done</button>
+    </div>
+    <div class="response-container" id="responseContainer">
+        <!-- Prediction results will be displayed here -->
+    </div>
+
+    <script>
+        const dragArea = document.getElementById('dragArea');
+        const browseFiles = document.getElementById('browseFiles');
+        const fileDetails = document.getElementById('fileDetails');
+        const fileNameElem = document.getElementById('fileName');
+        const progressBar = document.getElementById('progressBar').firstElementChild;
+        const doneButton = document.getElementById('doneButton');
+        const responseContainer = document.getElementById('responseContainer');
+
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+
+        let selectedFile = null;
+
+        // Trigger file input when clicking "browse"
+        browseFiles.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', handleFile);
+        dragArea.addEventListener('click', () => fileInput.click());
+        dragArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dragArea.style.backgroundColor = '#e5e7eb';
+        });
+        dragArea.addEventListener('dragleave', () => {
+            dragArea.style.backgroundColor = '#f9fafb';
+        });
+        dragArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dragArea.style.backgroundColor = '#f9fafb';
+            const file = event.dataTransfer.files[0];
+            handleFile({ target: { files: [file] } });
+        });
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+
+            if (file && file.type.startsWith('image/')) {
+                selectedFile = file;
+                fileNameElem.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                fileDetails.style.display = 'block';
+                doneButton.style.display = 'block';
+                simulateProgress();
+            } else {
+                alert('Please upload a valid image file.');
+            }
+        }
+
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = `${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 200);
+        }
+
+        // Handle form submission
+        doneButton.addEventListener('click', async () => {
+            if (!selectedFile) {
+                displayResponse({ error: 'Please select a file to upload.' });
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                responseContainer.innerHTML = '<p>Loading...</p>';
+                responseContainer.style.display = 'block';
+
+                const response = await fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                displayResponse(data);
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                displayResponse({ error: 'Error uploading file.' });
+            }
+        });
+
+        function displayResponse(data) {
+            responseContainer.style.display = 'block';
+            responseContainer.innerHTML = '';
+
+            if (data.error) {
+                const errorElement = document.createElement('p');
+                errorElement.className = 'error';
+                errorElement.textContent = data.error;
+                responseContainer.appendChild(errorElement);
+            } else {
+                const confidenceElement = document.createElement('p');
+                confidenceElement.className = 'success';
+                confidenceElement.textContent = `Confidence: ${data.confidence}`;
+
+                const predictionElement = document.createElement('p');
+                predictionElement.className = 'success';
+                predictionElement.textContent = `Prediction: ${data.prediction}`;
+
+                responseContainer.appendChild(confidenceElement);
+                responseContainer.appendChild(predictionElement);
+            }
+        }
+    </script>
+</body>
+</html>

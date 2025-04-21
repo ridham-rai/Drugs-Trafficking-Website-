@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dash_css.css">
+    <title>Drug Trafficking Monitor - India</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Drug Trafficking Monitor</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="report.html" class="active">User Feedback & Query</a>
+            <a href="about.html">About Us</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Dashboard</h2>
+
+        <section class="activity">
+            <h3>Recent News</h3>
+            <ul id="Feed">
+                <li><a href="https://www.hindustantimes.com/india-news/punjab-reeling-under-drug-menace-can-t-go-easy-on-repeat-offenders-sc-101675597099422.html" target="_blank">Punjab tackles drug menace, Supreme Court urges stricter action on repeat offenders.</a></li>
+                <li><a href="https://www.thestatesman.com/india/mizoram-boosts-anti-drug-drive-with-new-excise-and-narcotics-stations-2024-12-11-1407270.html" target="_blank">Mizoram strengthens anti-drug efforts with new excise and narcotics stations in Saitual and Khawzawl.</a></li>
+                <li><a href="https://www.india.com/news/india/starlink-device-investigated-in-4-2-billion-drug-smuggling-case-2024-12-11-1407289.html" target="_blank">Starlink device investigated in $4.2 billion drug smuggling case involving methamphetamine trafficking.</a></li>
+            </ul>
+        </section>        
+
+        <section class="visual">
+            <div class="c_container">
+                <h3>Statistics Overview</h3>
+                <div style="width:350px; margin: 0 auto;">
+                    <canvas id="Chart"></canvas>
+                </div>
+                
+            </div>
+            <div class="m_container">
+                <h3>Reported Activities Map</h3>
+                <div id="map"></div>
+            </div>
+        </section>
+
+        <section class="user_form">
+            <h3>User Engagement</h3>
+            <p>If you see suspicious activities, please report them!</p>
+            <button id="btn"><a href="option.html">Report Now</a></button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Drug Trafficking Monitor</p>
+    </footer>
+
+    <script src="dash_js.js"></script>
+</body>
+</html>

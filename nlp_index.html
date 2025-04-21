@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Trafficking Comment Classifier</title>
+</head>
+<body>
+    <h1>Drug Trafficking Comment Classifier</h1>
+    <form id="commentForm">
+        <textarea name="comment" rows="4" cols="50" placeholder="Enter your comment here..."></textarea><br><br>
+        <input type="submit" value="Check Comment">
+    </form>
+    
+    <h2 id="result" style="color: green;"></h2>
+
+    <script>
+        document.getElementById('commentForm').onsubmit = async function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const formData = new FormData(this);  // Create FormData object from form
+            console.log("Form Data:", formData);  // Log form data before sending it
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST', // Ensure POST method
+                    body: formData,
+                });
+
+                // Check if the response was successful
+                if (!response.ok) {
+                    console.error("HTTP error:", response.status);
+                    document.getElementById('result').innerText = "Error: Unable to get prediction.";
+                    return;
+                }
+
+                // Parse the JSON response
+                const result = await response.json();
+                console.log("Received result:", result);  // Log the response data
+
+                if (result.error) {
+                    document.getElementById('result').style.color = "red";
+                    document.getElementById('result').innerText = "Error: " + result.error;
+                } else {
+                    document.getElementById('result').style.color = "green";
+                    const message = result.prediction === 1 
+                        ? "This comment is related to drug trafficking." 
+                        : "This comment is not related to drug trafficking.";
+                    document.getElementById('result').innerText = message;
+                }
+            } catch (error) {
+                console.error("Request failed", error);
+                document.getElementById('result').innerText = "Error: Unable to make request.";
+            }
+        };
+    </script>
+</body>
+</html>
